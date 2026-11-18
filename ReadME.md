@@ -54,3 +54,8 @@ Models: multinomial logistic regression, random forest, and gradient boosting or
 Tuning: cross-validated grid or random search
 Metrics: macro-F1 (main), accuracy, confusion matrix
 Analysis: which languages get confused with each other (do related languages like Swedish/German/Dutch get mixed up?), which questions best reveal each language
+
+## Setup
+1. Download data.csv from https://osf.io/pyb8s into this folder (only needed to rerun 01_cleaning.ipynb)
+2. pip install -r requirements.txt
+3. Run the notebooks in order: 01_cleaning → Task 1 → Task 2
