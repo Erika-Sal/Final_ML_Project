@@ -22,7 +22,7 @@ Shared settings (everyone uses these)
 10. **Saved two files:** `clean_learners.parquet` (Task 1) and `clean_native_lang.parquet` (Task 2).
 
 ---------------------------------------------------
-Task 1: proficiency prediction (Person B)
+Task 1: proficiency prediction 
 
 Question: is this learner near-native in English grammar?
 
@@ -40,22 +40,28 @@ Metrics: F1 and ROC-AUC (main), plus precision, recall, confusion matrix. Accura
 Analysis: model comparison table, feature importance (which background factors matter most), who gets misclassified
 
 ---------------------------------------------------
-Task 2: native-language prediction (Person C)
+Task 2: native-language prediction
 
 Question: what's this learner's native language, based on their grammar mistakes?
 
-- File: clean_native_lang.parquet
+- Notebook: task2.ipynb
+- File: clean_native_lang_132.parquet
 - Target: native_lang, one of 10 languages: Finnish, Turkish, German, Russian, Hungarian, Polish, Dutch, Swedish, Spanish, Portuguese
-- Inputs: the 95 q columns (1 = right, 0 = wrong)
+- Inputs: 132 grammar questions (0/1)
+  - 95 scored `q` columns (the ones native speakers agree on)
+  - 37 extra `d_q` columns (the ones native speakers disagree on, which the original authors left out of the score)
 - Don't use as inputs: id
 
 Class sizes are uneven: Finnish ~40K down to Portuguese ~10K, so use class weights
-Models: multinomial logistic regression, random forest, and gradient boosting or an MLP (small neural network)
-Tuning: cross-validated grid or random search
-Metrics: macro-F1 (main), accuracy, confusion matrix
-Analysis: which languages get confused with each other (do related languages like Swedish/German/Dutch get mixed up?), which questions best reveal each language
+Models: logistic regression, Naive Bayes, random forest, gradient boosting, MLP, and a soft-voting ensemble
+Tuning: 3-fold GridSearchCV on a 50,000-row stratified sample, scored by macro F1
+Metrics: macro F1 (main), accuracy, macro precision and recall, confusion matrix
+Experiments: 95 vs. 132 questions; adding skill information (+ score, skill-adjusted answers)
+Analysis: which languages get confused, accuracy by learner skill level, which questions matter most, language "signatures", and language-family prediction
+
+Results: the voting ensemble was best (55.8% accuracy, macro F1 0.531, vs. a 17.8% baseline). Adding the 37 extra questions raised macro F1 by about 0.13. Most mix-ups are between related languages (Portuguese/Spanish, Dutch/German, Polish/Russian).
 
 ## Setup
 1. Download data.csv from https://osf.io/pyb8s into this folder (only needed to rerun 01_cleaning.ipynb)
 2. pip install -r requirements.txt
-3. Run the notebooks in order: 01_cleaning → Task 1 → Task 2
+3. Run the notebooks in order: 01_cleaning.ipynb → task1.ipynb → task2.ipynb
