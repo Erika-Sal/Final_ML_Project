@@ -1,3 +1,10 @@
+## Setup
+1. Download `data.csv` and `compiled.csv` from https://osf.io/pyb8s into this folder (only needed to rerun 01_cleaning.ipynb; both are too large for GitHub)
+2. pip install -r requirements.txt
+3. Run the notebooks in order: 01_cleaning.ipynb → task1.ipynb → task2.ipynb
+   (task1 and task2 load the cleaned .parquet files already in the repo, so they run without step 1)
+
+
 Our two questions
 - Task 1 (Person B): can we predict whether an English learner reaches near-native grammar proficiency using only their language background?
 - Task 2 (Person C): can we predict a learner's native language from which grammar questions they get right or wrong? This shows whether different language backgrounds make different kinds of mistakes.
